@@ -63,7 +63,7 @@ def trainval(exp_dict, savedir, args):
 
     val_loader = DataLoader(val_set, shuffle=False, batch_size=exp_dict["batch_size"])
     vis_loader = DataLoader(val_set, sampler=ut.SubsetSampler(train_set,
-                                                     indices=[0, 1, 2]),
+                                                     indices=range(20)),
                             batch_size=1)
 
     # Create model, opt, wrapper

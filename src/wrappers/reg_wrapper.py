@@ -10,6 +10,7 @@ from sklearn.metrics import confusion_matrix
 import skimage
 from src import wrappers
 
+from haven import haven_utils as hu
 
 class RegWrapper(torch.nn.Module):
     def __init__(self, model, opt):
@@ -51,13 +52,13 @@ class RegWrapper(torch.nn.Module):
         val_reg = abs(preds.cpu().numpy().ravel() - batch["counts"].numpy().ravel())
         return val_reg
         
-    def vis_on_batch(self, batch, savedir):
+    def vis_on_batch(self, batch, savedir_image):
         self.eval()
         
         pred_counts = self.predict_on_batch(batch)
         img = hu.get_image(batch["image_original"], denorm="rgb")
-        hu.save_image(savedir+"/images/%d.jpg" % batch["meta"]["index"], img)
-        hu.save_json(savedir+"/images/%d.json" % batch["meta"]["index"], 
+        hu.save_image(savedir_image, np.array(img))
+        hu.save_json(savedir_image.replace(".png",".json"), 
                     {"pred_counts":float(pred_counts), "gt_counts": float(batch["counts"])})
 
 

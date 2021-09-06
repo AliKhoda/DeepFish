@@ -36,6 +36,7 @@ def train_on_loader(model, train_loader):
         
     return train_monitor.get_avg_score()
 
+
 @torch.no_grad()
 def val_on_loader(model, val_loader, val_monitor, game_monitor):
     model.eval()
@@ -51,13 +52,31 @@ def val_on_loader(model, val_loader, val_monitor, game_monitor):
 
 
 @torch.no_grad()
+def val_on_loader(model, val_loader, val_monitor):
+    model.eval()
+
+    n_batches = len(val_loader)
+    print('Validating')
+    for i, batch in enumerate(tqdm.tqdm(val_loader)):
+        score = model.val_on_batch(batch)
+
+        val_monitor.add(score)
+        # if i % 10 == 0:
+        #     msg = "%d/%d %s" % (i, n_batches, val_monitor.get_avg_score())
+            
+        #     print(msg)
+
+
+    return val_monitor.get_avg_score()
+
+@torch.no_grad()
 def vis_on_loader(model, vis_loader, savedir):
     model.eval()
 
     n_batches = len(vis_loader)
     split = vis_loader.dataset.split
     for i, batch in enumerate(vis_loader):
-        print("%d - visualizing %s image - savedir:%s" % (i, batch["meta"]["split"][0], savedir.split("/")[-2]))
+        print("%d - visualizing %s image - savedir:%s" % (i, batch["meta"]["split"][0], savedir.split(os.path.sep)[-2]))
         model.vis_on_batch(batch, 
         savedir_image=os.path.join(savedir, f'{i}.png'))
         

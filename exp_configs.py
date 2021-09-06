@@ -28,7 +28,7 @@ EXP_GROUPS = {
                       "task": ["loc"],
                         "model":[
                            "fcn8"],
-                        "batch_size": [1],
+                        "batch_size": [2],
                         "transform":["rgb_normalize"],
                         "max_epoch": [1000],
                         "wrapper":["loc_wrapper"]},
@@ -40,7 +40,7 @@ EXP_GROUPS = {
                       "task": ["seg"],
                         "model":[
                            "fcn8"],
-                        "batch_size": [1],
+                        "batch_size": [2],
                         "transform":["rgb_normalize"],
                         "max_epoch": [1000],
                         "wrapper":["seg_wrapper"]},
