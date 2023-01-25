@@ -30,11 +30,11 @@ class FishSeg:
 
     def __getitem__(self, index):
         name = self.img_names[index]
-        image_pil = Image.open(self.path + "/images/"+ name + ".jpg")
+        image_pil = Image.open(self.path + "/images/"+ str(name) + ".jpg")
        
         image = self.transform(image_pil)
 
-        mask_classes = Image.open(self.path + "/masks/"+ self.mask_names[index] + ".png").convert('L')
+        mask_classes = Image.open(self.path + "/masks/"+ str(self.mask_names[index]) + ".png").convert('L')
 
         mask_classes = torch.from_numpy(np.array(mask_classes)).float() / 255.
         batch = {"images": image,
@@ -48,7 +48,7 @@ class FishSeg:
 
 # for seg,
 def get_seg_data(datadir, split,  habitat=None ):
-    df = pd.read_csv(os.path.join(datadir,  '%s.csv' % split))
+    df = pd.read_csv(os.path.join(datadir,  '%s.csv' % split), dtype=str)
     df = datasets.slice_df_reg(df, habitat)
     img_names = np.array(df['ID'])
     mask_names = np.array(df['ID'])
